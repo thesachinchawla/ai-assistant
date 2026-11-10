@@ -12,9 +12,13 @@ client = AsyncOpenAI(
 
 
 async def generate_response(message: str) -> str:
-    response = await client.response.create(
-        model=os.getenv("OPENAI_MODEL"),
-        instructions="You are a helpful AI assistant.",
-        input=message
-    )
-    return response.output_text
+    try:
+        llm_response = await client.responses.create(
+            model=os.getenv("OPENAI_MODEL"),
+            instructions="You are a helpful AI assistant.",
+            input=message
+        )
+        return llm_response.output_text
+    except Exception as e:
+        print(e)
+        return "Sorry, I encountered an error while processing your request."

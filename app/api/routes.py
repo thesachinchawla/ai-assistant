@@ -1,4 +1,4 @@
-from fastAPI import APIRouter, HTTPExtensions
+from fastapi import APIRouter, HTTPException
 
 from app.schemas.chat import ChatRequest, ChatResponse
 from app.services.llm_service import generate_response
@@ -12,7 +12,7 @@ async def chat_endpoint(request: ChatRequest):
         response_text = await generate_response(request.message)
         return ChatResponse(response=response_text)
     except Exception as e:
-        raise HTTPExtensions(
+        raise HTTPException(
             status_code=500,
             detail='Failed to generate AI response'
         ) from e
